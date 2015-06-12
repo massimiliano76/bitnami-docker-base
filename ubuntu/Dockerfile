@@ -18,7 +18,6 @@ RUN apt-get update &&\
   chmod +x '/usr/bin/bitnami-help' &&\
   adduser bitnami --disabled-password --gecos "" &&\
   sed -i -e 's/\s*Defaults\s*secure_path\s*=/# Defaults secure_path=/' /etc/sudoers &&\
-  echo "Defaults secure_path=\"$PATH\"" >> /etc/sudoers &&\
   echo "bitnami ALL=NOPASSWD: ALL" >> /etc/sudoers &&\
   rm -rf $BITNAMI_PREFIX/ctlscript.sh \
     $BITNAMI_PREFIX/config \
