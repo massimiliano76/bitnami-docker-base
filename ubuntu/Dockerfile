@@ -14,7 +14,7 @@ RUN apt-get update &&\
   DEBIAN_FRONTEND=noninteractive apt-get install -y curl sudo &&\
   curl -o /usr/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/1.4/gosu-$(dpkg --print-architecture)" && \
   chmod +x /usr/bin/gosu &&\
-  echo '#!bin/sh\n. /bitnami-utils.sh\nprint_bitnami_help_page' > '/usr/bin/bitnami-help' &&\
+  echo '#!bin/sh\n. $BITNAMI_PREFIX/bitnami-utils.sh\nprint_bitnami_help_page' > '/usr/bin/bitnami-help' &&\
   chmod +x '/usr/bin/bitnami-help' &&\
   adduser bitnami --disabled-password --gecos "" &&\
   sed -i -e 's/\s*Defaults\s*secure_path\s*=/# Defaults secure_path=/' /etc/sudoers &&\
