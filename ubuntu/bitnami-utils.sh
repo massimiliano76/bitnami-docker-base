@@ -57,6 +57,10 @@ generate_conf_files() {
 GITHUB_PAGE=https://github.com/bitnami/bitnami-docker-${BITNAMI_APP_NAME}
 
 print_welcome_page() {
+  if [ -z "$DISABLE_UPDATE_CHECK" ]; then
+    check_for_updates &
+  fi
+
 cat << EndOfMessage
        ___ _ _                   _
       | _ |_) |_ _ _  __ _ _ __ (_)
@@ -86,7 +90,34 @@ print_bitnami_help_page() {
   fi
 }
 
+# Checks for any updates for this Docker image
+check_for_updates() {
+  UPDATE_SERVER="http://docker-updates.bitnamiapp.com"
+  ORIGIN="DHR"
 
+  RESPONSE=$(curl -s --connect-timeout 5 \
+    "$UPDATE_SERVER/api/v1?image=$BITNAMI_APP_NAME&version=$BITNAMI_APP_VERSION&origin=DHR" \
+    -w "|%{http_code}")
+
+  VERSION=$(echo $RESPONSE | cut -d '|' -f 1)
+  if [[ ! $VERSION =~ [0-9.-] ]]; then
+    return
+  fi
+
+  STATUS=$(echo $RESPONSE | cut -d '|' -f 2)
+
+  if [ "$STATUS" = "200" ]; then
+    COLOR="\e[0;30;42m"
+    MSG="Your container is up to date!"
+  elif [ "$STATUS" = "201" ]; then
+    COLOR="\e[0;30;43m"
+    MSG="New version available: run docker pull bitnami/$BITNAMI_APP_NAME:$VERSION to update."
+  fi
+
+  if [ "$MSG" ]; then
+    printf "\n$COLOR*** $MSG ***\e[0m\n\n"
+  fi
+}
 
 # We call tail before the logs are there so we need
 # to keep retrying
