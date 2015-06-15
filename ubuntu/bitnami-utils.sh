@@ -97,8 +97,13 @@ wait_and_tail_logs(){
   while [ $retries -lt 10 ]
   do
     if [ "$(ls -A $LOGS_DIR)" ]; then
-      gosu $BITNAMI_APP_USER:$BITNAMI_APP_USER tail -f -n 1000 $LOGS_DIR/*.log &
-      exit 0
+      CURRENT_USER=$(id -u -n)
+      if [ $CURRENT_USER = $BITNAMI_APP_USER ]; then
+        tail -f -n 1000 $LOGS_DIR/*.log &
+      else
+        gosu $BITNAMI_APP_USER:$BITNAMI_APP_USER tail -f -n 1000 $LOGS_DIR/*.log &
+      fi
+      return
     else
       sleep 1
     fi
