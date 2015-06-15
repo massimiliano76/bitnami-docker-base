@@ -43,3 +43,10 @@ fi
 if [ -f "/tmp/post-install.sh" ]; then
   sh /tmp/post-install.sh
 fi
+
+rm -rf $BITNAMI_PREFIX/ctlscript.sh \
+  $BITNAMI_PREFIX/config \
+  $BITNAMI_PREFIX/manager-linux-x64.run \
+  $BITNAMI_PREFIX/uninstall $BITNAMI_PREFIX/uninstall.dat \
+  tmp/*
+
