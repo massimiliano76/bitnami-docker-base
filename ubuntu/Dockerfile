@@ -1,7 +1,7 @@
 FROM ubuntu-debootstrap:14.04
 MAINTAINER Bitnami
 
-ENV BITNAMI_PREFIX=/usr/local/bitnami
+ENV BITNAMI_PREFIX=/opt/bitnami
 
 # Create bitnami user and added specific requirements
 RUN apt-get update && \
