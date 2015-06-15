@@ -5,7 +5,7 @@ ENV BITNAMI_PREFIX=/usr/local/bitnami
 
 # Create bitnami user and added specific requirements
 RUN apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y curl sudo && \
+  DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y curl ca-certificates sudo && \
   curl -o /usr/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/1.4/gosu-$(dpkg --print-architecture)" && \
   chmod +x /usr/bin/gosu && \
   echo '#!/bin/bash\n. $BITNAMI_PREFIX/bitnami-utils.sh\nprint_bitnami_help_page' > '/usr/bin/print-help' && \
