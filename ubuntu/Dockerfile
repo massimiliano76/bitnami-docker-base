@@ -1,5 +1,5 @@
 FROM ubuntu-debootstrap:14.04
-MAINTAINER Bitnami
+MAINTAINER The Bitnami Team <containers@bitnami.com>
 
 ENV BITNAMI_PREFIX=/opt/bitnami
 
