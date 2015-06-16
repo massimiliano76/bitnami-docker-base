@@ -6,7 +6,9 @@ echo "===> Downloading Bitnami $BITNAMI_APP_NAME-$BITNAMI_APP_VERSION installer"
 if [ -f /tmp/installer.run ]; then
   echo "===> /tmp/installer.run already exists, skipping download."
 else
-  url=https://downloads.bitnami.com/files/download/containers/$BITNAMI_APP_NAME/bitnami-$BITNAMI_APP_NAME-$BITNAMI_APP_VERSION-container-linux-x64-installer.run
+  BITNAMI_INSTALLER_VERSION=$(echo $BITNAMI_APP_VERSION | awk -F"-r" '{print $1}')
+  BITNAMI_APP_FILENAME=bitnami-$BITNAMI_APP_NAME-$BITNAMI_INSTALLER_VERSION-container-linux-x64-installer.run
+  url=https://downloads.bitnami.com/files/download/containers/$BITNAMI_APP_NAME/$BITNAMI_APP_FILENAME
   echo $url
 
   curl -SL --progress-bar $url -o /tmp/installer.run
