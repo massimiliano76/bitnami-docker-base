@@ -17,9 +17,5 @@ RUN apt-get update && \
   apt-get clean && \
   rm -rf /var/lib/apt /var/cache/apt/archives/* /tmp/*
 
-ONBUILD COPY help.txt $BITNAMI_PREFIX/help.txt
-ONBUILD COPY installer.run.sha256 /tmp/installer.run.sha256
-ONBUILD COPY post-install.sh /tmp/post-install.sh
-
 COPY install.sh $BITNAMI_PREFIX/install.sh
 COPY bitnami-utils.sh $BITNAMI_PREFIX/bitnami-utils.sh
