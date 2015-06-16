@@ -1,5 +1,5 @@
 FROM alpine
-MAINTAINER The Bitnami Team <containers@bitnami.com>
+MAINTAINER Bitnami <containers@bitnami.com>
 
 RUN apk add --update wget libstdc++ ncurses
 
