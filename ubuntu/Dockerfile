@@ -19,3 +19,4 @@ RUN apt-get update && \
 
 COPY install.sh $BITNAMI_PREFIX/install.sh
 COPY bitnami-utils.sh $BITNAMI_PREFIX/bitnami-utils.sh
+COPY updates-ca-cert.pem $BITNAMI_PREFIX/updates-ca-cert.pem

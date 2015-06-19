@@ -92,10 +92,11 @@ print_bitnami_help_page() {
 
 # Checks for any updates for this Docker image
 check_for_updates() {
-  UPDATE_SERVER="http://docker-updates.bitnamiapp.com"
+  UPDATE_SERVER="https://container.checkforupdates.com"
   ORIGIN="DHR"
 
   RESPONSE=$(curl -s --connect-timeout 5 \
+    --cacert $BITNAMI_PREFIX/updates-ca-cert.pem \
     "$UPDATE_SERVER/api/v1?image=$BITNAMI_APP_NAME&version=$BITNAMI_APP_VERSION&origin=DHR" \
     -w "|%{http_code}")
 
