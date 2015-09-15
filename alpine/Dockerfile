@@ -1,6 +1,8 @@
 FROM alpine:3.2
 MAINTAINER Bitnami <containers@bitnami.com>
 
+ENV BITNAMI_PREFIX=/opt/bitnami
+
 RUN apk add --update wget libstdc++ bash ca-certificates && \
     wget "https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-2.21-r2.apk" && \
     wget "https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-bin-2.21-r2.apk" && \
@@ -8,7 +10,14 @@ RUN apk add --update wget libstdc++ bash ca-certificates && \
     /usr/glibc/usr/bin/ldconfig /lib /usr/glibc/usr/lib && \
     wget -O /usr/bin/gosu "https://github.com/tianon/gosu/releases/download/1.4/gosu-amd64" && \
     chmod +x /usr/bin/gosu && \
+    echo -e '#!/bin/bash\n. $BITNAMI_PREFIX/bitnami-utils.sh\nprint_bitnami_help_page' > '/usr/bin/print-help' && \
+    echo -e '#!/bin/bash\n. $BITNAMI_PREFIX/bitnami-utils.sh\ncheck_for_updates' > '/usr/bin/check-updates' && \
+    chmod a+x /usr/bin/print-help /usr/bin/check-updates && \
     adduser -h /home/bitnami -s /bin/bash -S -D -g "" bitnami && \
     echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
     rm glibc-2.21-r2.apk glibc-bin-2.21-r2.apk && \
     rm /var/cache/apk/*
+
+COPY install.sh $BITNAMI_PREFIX/install.sh
+COPY bitnami-utils.sh $BITNAMI_PREFIX/bitnami-utils.sh
+COPY updates-ca-cert.pem $BITNAMI_PREFIX/updates-ca-cert.pem
