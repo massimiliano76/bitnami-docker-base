@@ -19,7 +19,7 @@ fi
 
 if [ -f /tmp/installer.run.sha256 ]; then
   echo "===> Checking installer integrity"
-  sed 's/ /  /' /tmp/installer.run.sha256 | sha256sum -c '-'
+  sha256sum -c /tmp/installer.run.sha256 >/dev/null
 else
   echo "===> Warning, installer sha256 file not found, integrity check skipped"
 fi
