@@ -7,4 +7,5 @@ RUN apk add --update wget libstdc++ && \
     apk add --allow-untrusted glibc-2.21-r2.apk glibc-bin-2.21-r2.apk && \
     /usr/glibc/usr/bin/ldconfig /lib /usr/glibc/usr/lib && \
     rm glibc-2.21-r2.apk glibc-bin-2.21-r2.apk && \
-    apk del wget
+    apk del wget && \
+    rm /var/cache/apk/*
