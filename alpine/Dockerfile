@@ -3,7 +3,7 @@ MAINTAINER Bitnami <containers@bitnami.com>
 
 ENV BITNAMI_PREFIX=/opt/bitnami
 
-RUN apk add --update wget libstdc++ bash ca-certificates && \
+RUN apk add --update wget libstdc++ bash ca-certificates sudo && \
     wget "https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-2.21-r2.apk" && \
     wget "https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-bin-2.21-r2.apk" && \
     apk add --allow-untrusted glibc-2.21-r2.apk glibc-bin-2.21-r2.apk && \
@@ -15,6 +15,7 @@ RUN apk add --update wget libstdc++ bash ca-certificates && \
     chmod a+x /usr/bin/print-help /usr/bin/check-updates && \
     addgroup bitnami && \
     adduser -h /home/bitnami -s /bin/bash -D -G bitnami -g "" bitnami && \
+    echo "bitnami ALL=NOPASSWD: ALL" >> /etc/sudoers && \
     echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
     rm glibc-2.21-r2.apk glibc-bin-2.21-r2.apk && \
     rm /var/cache/apk/*
