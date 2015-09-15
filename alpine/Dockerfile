@@ -3,7 +3,7 @@ MAINTAINER Bitnami <containers@bitnami.com>
 
 ENV BITNAMI_PREFIX=/opt/bitnami
 
-RUN apk add --update wget libstdc++ bash ca-certificates sudo curl && \
+RUN apk add --update wget libstdc++ bash ca-certificates sudo curl coreutils && \
     wget "https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-2.21-r2.apk" && \
     wget "https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-bin-2.21-r2.apk" && \
     wget "http://nl.alpinelinux.org/alpine/edge/testing/x86_64/shadow-4.2.1-r3.apk" && \
