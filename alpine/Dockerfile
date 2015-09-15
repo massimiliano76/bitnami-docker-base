@@ -13,7 +13,8 @@ RUN apk add --update wget libstdc++ bash ca-certificates && \
     echo -e '#!/bin/bash\n. $BITNAMI_PREFIX/bitnami-utils.sh\nprint_bitnami_help_page' > '/usr/bin/print-help' && \
     echo -e '#!/bin/bash\n. $BITNAMI_PREFIX/bitnami-utils.sh\ncheck_for_updates' > '/usr/bin/check-updates' && \
     chmod a+x /usr/bin/print-help /usr/bin/check-updates && \
-    adduser -h /home/bitnami -s /bin/bash -S -D -g "" bitnami && \
+    addgroup bitnami && \
+    adduser -h /home/bitnami -s /bin/bash -D -G bitnami -g "" bitnami && \
     echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
     rm glibc-2.21-r2.apk glibc-bin-2.21-r2.apk && \
     rm /var/cache/apk/*
