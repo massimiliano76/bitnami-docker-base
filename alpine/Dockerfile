@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.2
 MAINTAINER Bitnami <containers@bitnami.com>
 
 RUN apk add --update wget libstdc++ && \
