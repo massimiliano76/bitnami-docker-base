@@ -8,6 +8,7 @@ RUN apk add --update wget libstdc++ bash && \
     /usr/glibc/usr/bin/ldconfig /lib /usr/glibc/usr/lib && \
     wget --no-check-certificate -O /usr/bin/gosu "https://github.com/tianon/gosu/releases/download/1.4/gosu-amd64" && \
     chmod +x /usr/bin/gosu && \
+    adduser -h /home/bitnami -s /bin/bash -S -D -g "" bitnami && \
     rm glibc-2.21-r2.apk glibc-bin-2.21-r2.apk && \
     apk del wget && \
     rm /var/cache/apk/*
