@@ -7,19 +7,25 @@ if [ -f /tmp/installer.run ]; then
   echo "===> /tmp/installer.run already exists, skipping download."
 else
   BITNAMI_INSTALLER_VERSION=$(echo $BITNAMI_APP_VERSION | awk -F"-r" '{print $1}')
-  BITNAMI_APP_FILENAME=bitnami-$BITNAMI_APP_NAME-$BITNAMI_INSTALLER_VERSION-container-linux-x64-installer.run
-  url=https://downloads.bitnami.com/files/download/containers/$BITNAMI_APP_NAME/$BITNAMI_APP_FILENAME
+  if [ "x$IS_BITNAMI_STACK" = "x" ] ; then
+    BITNAMI_APP_FILENAME=bitnami-$BITNAMI_APP_NAME-$BITNAMI_INSTALLER_VERSION-container-linux-x64-installer.run
+    url=https://downloads.bitnami.com/files/download/containers/$BITNAMI_APP_NAME/$BITNAMI_APP_FILENAME
+  else
+    BITNAMI_APP_FILENAME=bitnami-$BITNAMI_APP_NAME-$BITNAMI_INSTALLER_VERSION-linux-x64-installer.run
+    url=https://downloads.bitnami.com/files/stacks/$BITNAMI_APP_NAME/$BITNAMI_APP_VERSION/$BITNAMI_APP_FILENAME
+  fi
+  DOWNLOADED_INSTALLER=/tmp/$BITNAMI_APP_NAME-$BITNAMI_APP_VERSION-installer.run
   echo $url
   if [ $SHOW_PROGRESS ]; then
-    curl -SL --progress-bar $url -o /tmp/installer.run
+    curl -SL --progress-bar $url -o $DOWNLOADED_INSTALLER
   else
-    curl -SLs $url -o /tmp/installer.run
+    curl -SLs $url -o $DOWNLOADED_INSTALLER
   fi
 fi
 
-if [ -f /tmp/installer.run.sha256 ]; then
+if [ -f ${DOWNLOADED_INSTALLER}.sha256 ]; then
   echo "===> Checking installer integrity"
-  sha256sum -c --quiet /tmp/installer.run.sha256
+  sha256sum -c --quiet ${DOWNLOADED_INSTALLER}.sha256
 else
   echo "===> Warning, installer sha256 file not found, integrity check skipped"
 fi
@@ -27,11 +33,11 @@ fi
 echo "===> Running Bitnami $BITNAMI_APP_NAME-$BITNAMI_APP_VERSION installer"
 # Fix for busy text error if added the installer from the Dockerfile
 if [ ! -x /tmp/installer.sh ]; then
-  chmod +x /tmp/installer.run
+  chmod +x $DOWNLOADED_INSTALLER
 fi
-sync /tmp/installer.run
+sync $DOWNLOADED_INSTALLER
 
-/tmp/installer.run --mode unattended --prefix $BITNAMI_PREFIX $@
+$DOWNLOADED_INSTALLER --mode unattended --prefix $BITNAMI_PREFIX $@
 
 if [ -f $BITNAMI_APP_DIR/scripts/ctl.sh  ]; then
   $BITNAMI_APP_DIR/scripts/ctl.sh stop > /dev/null
@@ -49,9 +55,13 @@ if [ -f "/tmp/post-install.sh" ]; then
   sh /tmp/post-install.sh
 fi
 
-rm -rf $BITNAMI_PREFIX/ctlscript.sh \
-  $BITNAMI_PREFIX/config \
-  $BITNAMI_PREFIX/manager-linux-x64.run \
+rm -rf $BITNAMI_PREFIX/manager-linux-x64.run \
   $BITNAMI_PREFIX/uninstall $BITNAMI_PREFIX/uninstall.dat \
+  $DOWNLOADED_INSTALLER \
   tmp/*
 
+if [ "x$IS_BITNAMI_STACK" = "x" ] ; then
+  echo "DELETING CTLSCRIPT!!"
+  rm -rf $BITNAMI_PREFIX/ctlscript.sh \
+    $BITNAMI_PREFIX/config
+fi
