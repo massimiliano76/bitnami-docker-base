@@ -11,5 +11,4 @@ RUN apk add --update wget libstdc++ bash && \
     adduser -h /home/bitnami -s /bin/bash -S -D -g "" bitnami && \
     echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
     rm glibc-2.21-r2.apk glibc-bin-2.21-r2.apk && \
-    apk del wget && \
     rm /var/cache/apk/*
