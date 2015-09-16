@@ -17,15 +17,15 @@ else
   DOWNLOADED_INSTALLER=/tmp/$BITNAMI_APP_NAME-$BITNAMI_APP_VERSION-installer.run
   echo $url
   if [ $SHOW_PROGRESS ]; then
-    curl -SL --progress-bar $url -o $DOWNLOADED_INSTALLER
+    curl -SL --progress-bar $url -o /tmp/installer.run
   else
-    curl -SLs $url -o $DOWNLOADED_INSTALLER
+    curl -SLs $url -o /tmp/installer.run
   fi
 fi
 
-if [ -f ${DOWNLOADED_INSTALLER}.sha256 ]; then
+if [ -f /tmp/installer.run.sha256 ]; then
   echo "===> Checking installer integrity"
-  sha256sum -c --quiet ${DOWNLOADED_INSTALLER}.sha256
+  sha256sum -c --quiet /tmp/installer.run.sha256
 else
   echo "===> Warning, installer sha256 file not found, integrity check skipped"
 fi
@@ -33,11 +33,11 @@ fi
 echo "===> Running Bitnami $BITNAMI_APP_NAME-$BITNAMI_APP_VERSION installer"
 # Fix for busy text error if added the installer from the Dockerfile
 if [ ! -x /tmp/installer.sh ]; then
-  chmod +x $DOWNLOADED_INSTALLER
+  chmod +x /tmp/installer.run
 fi
-sync $DOWNLOADED_INSTALLER
+sync /tmp/installer.run
 
-$DOWNLOADED_INSTALLER --mode unattended --prefix $BITNAMI_PREFIX $@
+/tmp/installer.run --mode unattended --prefix $BITNAMI_PREFIX $@
 
 if [ -f $BITNAMI_APP_DIR/scripts/ctl.sh  ]; then
   $BITNAMI_APP_DIR/scripts/ctl.sh stop > /dev/null
@@ -57,11 +57,9 @@ fi
 
 rm -rf $BITNAMI_PREFIX/manager-linux-x64.run \
   $BITNAMI_PREFIX/uninstall $BITNAMI_PREFIX/uninstall.dat \
-  $DOWNLOADED_INSTALLER \
   tmp/*
 
 if [ "x$IS_BITNAMI_STACK" = "x" ] ; then
-  echo "DELETING CTLSCRIPT!!"
   rm -rf $BITNAMI_PREFIX/ctlscript.sh \
     $BITNAMI_PREFIX/config
 fi
