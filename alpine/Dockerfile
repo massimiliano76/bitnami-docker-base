@@ -16,6 +16,7 @@ RUN apk add --update wget libstdc++ bash ca-certificates sudo curl coreutils && 
     chmod a+x /usr/bin/print-help /usr/bin/check-updates && \
     addgroup bitnami && \
     adduser -h /home/bitnami -s /bin/bash -D -G bitnami -g "" bitnami && \
+    mkdir -p /usr/local/include && \
     echo "bitnami ALL=NOPASSWD: ALL" >> /etc/sudoers && \
     echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
     rm glibc-2.21-r2.apk glibc-bin-2.21-r2.apk shadow-4.2.1-r3.apk && \
