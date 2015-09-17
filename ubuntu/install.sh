@@ -14,7 +14,6 @@ else
     BITNAMI_APP_FILENAME=bitnami-$BITNAMI_APP_NAME-$BITNAMI_INSTALLER_VERSION-linux-x64-installer.run
     url=https://downloads.bitnami.com/files/stacks/$BITNAMI_APP_NAME/$BITNAMI_APP_VERSION/$BITNAMI_APP_FILENAME
   fi
-  DOWNLOADED_INSTALLER=/tmp/$BITNAMI_APP_NAME-$BITNAMI_APP_VERSION-installer.run
   echo $url
   if [ $SHOW_PROGRESS ]; then
     curl -SL --progress-bar $url -o /tmp/installer.run
