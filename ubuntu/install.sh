@@ -7,8 +7,13 @@ if [ -f /tmp/installer.run ]; then
   echo "===> /tmp/installer.run already exists, skipping download."
 else
   BITNAMI_INSTALLER_VERSION=$(echo $BITNAMI_APP_VERSION | awk -F"-r" '{print $1}')
-  BITNAMI_APP_FILENAME=bitnami-$BITNAMI_APP_NAME-$BITNAMI_INSTALLER_VERSION-container-linux-x64-installer.run
-  url=https://downloads.bitnami.com/files/download/containers/$BITNAMI_APP_NAME/$BITNAMI_APP_FILENAME
+  if [ "x$IS_BITNAMI_STACK" = "x" ] ; then
+    BITNAMI_APP_FILENAME=bitnami-$BITNAMI_APP_NAME-$BITNAMI_INSTALLER_VERSION-container-linux-x64-installer.run
+    url=https://downloads.bitnami.com/files/download/containers/$BITNAMI_APP_NAME/$BITNAMI_APP_FILENAME
+  else
+    BITNAMI_APP_FILENAME=bitnami-$BITNAMI_APP_NAME-$BITNAMI_INSTALLER_VERSION-linux-x64-installer.run
+    url=https://downloads.bitnami.com/files/stacks/$BITNAMI_APP_NAME/$BITNAMI_APP_VERSION/$BITNAMI_APP_FILENAME
+  fi
   echo $url
   if [ $SHOW_PROGRESS ]; then
     curl -SL --progress-bar $url -o /tmp/installer.run
@@ -49,9 +54,11 @@ if [ -f "/tmp/post-install.sh" ]; then
   sh /tmp/post-install.sh
 fi
 
-rm -rf $BITNAMI_PREFIX/ctlscript.sh \
-  $BITNAMI_PREFIX/config \
-  $BITNAMI_PREFIX/manager-linux-x64.run \
+rm -rf $BITNAMI_PREFIX/manager-linux-x64.run \
   $BITNAMI_PREFIX/uninstall $BITNAMI_PREFIX/uninstall.dat \
   tmp/*
 
+if [ "x$IS_BITNAMI_STACK" = "x" ] ; then
+  rm -rf $BITNAMI_PREFIX/ctlscript.sh \
+    $BITNAMI_PREFIX/config
+fi
