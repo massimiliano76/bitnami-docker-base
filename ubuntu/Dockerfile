@@ -21,6 +21,7 @@ RUN apt-get update && \
   apt-get clean && \
   rm -rf /var/lib/apt /var/cache/apt/archives/* /tmp/*
 
+COPY check-for-updates /etc/cont-init.d/01-check-for-updates
 COPY install.sh $BITNAMI_PREFIX/install.sh
 COPY bitnami-utils.sh $BITNAMI_PREFIX/bitnami-utils.sh
 COPY updates-ca-cert.pem $BITNAMI_PREFIX/updates-ca-cert.pem

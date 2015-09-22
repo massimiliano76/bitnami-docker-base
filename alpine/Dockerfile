@@ -26,6 +26,7 @@ RUN apk add --update wget libstdc++ bash ca-certificates sudo curl coreutils && 
     rm glibc-2.21-r2.apk glibc-bin-2.21-r2.apk shadow-4.2.1-r3.apk && \
     rm /var/cache/apk/*
 
+COPY check-for-updates /etc/cont-init.d/01-check-for-updates
 COPY install.sh $BITNAMI_PREFIX/install.sh
 COPY bitnami-utils.sh $BITNAMI_PREFIX/bitnami-utils.sh
 COPY updates-ca-cert.pem $BITNAMI_PREFIX/updates-ca-cert.pem
