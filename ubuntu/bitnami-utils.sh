@@ -91,7 +91,7 @@ check_for_updates() {
   UPDATE_SERVER="https://container.checkforupdates.com"
   ORIGIN="DHR"
 
-  RESPONSE=$(curl -s --connect-timeout 5 \
+  RESPONSE=$(curl -s --connect-timeout 20 \
     --cacert $BITNAMI_PREFIX/updates-ca-cert.pem \
     "$UPDATE_SERVER/api/v1?image=$BITNAMI_APP_NAME&version=$BITNAMI_APP_VERSION&origin=DHR" \
     -w "|%{http_code}")
