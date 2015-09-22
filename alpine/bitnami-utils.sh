@@ -57,10 +57,6 @@ generate_conf_files() {
 GITHUB_PAGE=https://github.com/bitnami/bitnami-docker-${BITNAMI_APP_NAME}
 
 print_welcome_page() {
-  if [ -z "$DISABLE_UPDATE_CHECK" ]; then
-    check_for_updates &
-  fi
-
 cat << EndOfMessage
        ___ _ _                   _
       | _ |_) |_ _ _  __ _ _ __ (_)
