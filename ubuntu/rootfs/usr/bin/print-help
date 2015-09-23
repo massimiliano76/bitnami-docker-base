@@ -1,0 +1,3 @@
+#!/bin/bash
+. $BITNAMI_PREFIX/bitnami-utils.sh
+print_bitnami_help_page

@@ -12,21 +12,13 @@ RUN apk add --update wget libstdc++ bash ca-certificates sudo curl coreutils && 
     /usr/glibc/usr/bin/ldconfig /lib /usr/glibc/usr/lib && \
     wget https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-amd64.tar.gz && \
     tar -zxf s6-overlay-amd64.tar.gz -C / && \
-    rm -rf s6-overlay-amd64.tar.gz && \
     wget -O /usr/bin/gosu "https://github.com/tianon/gosu/releases/download/1.4/gosu-amd64" && \
     chmod +x /usr/bin/gosu && \
-    echo -e '#!/bin/bash\n. $BITNAMI_PREFIX/bitnami-utils.sh\nprint_bitnami_help_page' > '/usr/bin/print-help' && \
-    echo -e '#!/bin/bash\n. $BITNAMI_PREFIX/bitnami-utils.sh\ncheck_for_updates' > '/usr/bin/check-updates' && \
-    chmod a+x /usr/bin/print-help /usr/bin/check-updates && \
     addgroup bitnami && \
     adduser -h /home/bitnami -s /bin/bash -D -G bitnami -g "" bitnami && \
-    mkdir -p /usr/local/include && \
     echo "bitnami ALL=NOPASSWD: ALL" >> /etc/sudoers && \
     echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
-    rm glibc-2.21-r2.apk glibc-bin-2.21-r2.apk shadow-4.2.1-r3.apk && \
+    rm glibc-2.21-r2.apk glibc-bin-2.21-r2.apk shadow-4.2.1-r3.apk s6-overlay-amd64.tar.gz && \
     rm /var/cache/apk/*
 
-COPY check-for-updates /etc/cont-init.d/01-check-for-updates
-COPY install.sh $BITNAMI_PREFIX/install.sh
-COPY bitnami-utils.sh $BITNAMI_PREFIX/bitnami-utils.sh
-COPY updates-ca-cert.pem $BITNAMI_PREFIX/updates-ca-cert.pem
+COPY rootfs/ /
