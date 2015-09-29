@@ -61,4 +61,7 @@ rm -rf $BITNAMI_PREFIX/manager-linux-x64.run \
 if [ "x$IS_BITNAMI_STACK" = "x" ] ; then
   rm -rf $BITNAMI_PREFIX/ctlscript.sh \
     $BITNAMI_PREFIX/config
+else
+  $BITNAMI_PREFIX/ctlscript.sh stop
+  mv $BITNAMI_PREFIX/apps $BITNAMI_PREFIX/apps-original
 fi
