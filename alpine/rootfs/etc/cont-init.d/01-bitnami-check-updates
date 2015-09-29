@@ -1,0 +1,13 @@
+#!/usr/bin/execlineb -P
+
+with-contenv
+
+# DISABLE_UPDATE_CHECK env disables the update check
+backtick -D 0 -n DISABLE_UPDATE_CHECK { printcontenv DISABLE_UPDATE_CHECK }
+import -u DISABLE_UPDATE_CHECK
+
+ifelse { s6-test ${DISABLE_UPDATE_CHECK} -eq 0 } {
+  background {
+    /usr/bin/check-updates
+  }
+}

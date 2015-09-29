@@ -51,16 +51,12 @@ generate_conf_files() {
   # echo ""
   # echo "==> Copying default configuration to $BASE_PATH/conf..."
   # echo ""
-  cp -nr $BASE_PATH/conf.defaults/* $BASE_PATH/conf
+  cp -a $BASE_PATH/conf.defaults/* $BASE_PATH/conf
 }
 
 GITHUB_PAGE=https://github.com/bitnami/bitnami-docker-${BITNAMI_APP_NAME}
 
 print_welcome_page() {
-  if [ -z "$DISABLE_UPDATE_CHECK" ]; then
-    check_for_updates &
-  fi
-
 cat << EndOfMessage
        ___ _ _                   _
       | _ |_) |_ _ _  __ _ _ __ (_)
@@ -95,7 +91,7 @@ check_for_updates() {
   UPDATE_SERVER="https://container.checkforupdates.com"
   ORIGIN="DHR"
 
-  RESPONSE=$(curl -s --connect-timeout 5 \
+  RESPONSE=$(curl -s --connect-timeout 20 \
     --cacert $BITNAMI_PREFIX/updates-ca-cert.pem \
     "$UPDATE_SERVER/api/v1?image=$BITNAMI_APP_NAME&version=$BITNAMI_APP_VERSION&origin=DHR" \
     -w "|%{http_code}")
@@ -133,7 +129,7 @@ wait_and_tail_logs(){
       if [ $CURRENT_USER = $BITNAMI_APP_USER ]; then
         tail -f -n 1000 $LOGS_DIR/*.log &
       else
-        gosu $BITNAMI_APP_USER:$BITNAMI_APP_USER tail -f -n 1000 $LOGS_DIR/*.log &
+        s6-setuidgid $BITNAMI_APP_USER tail -f -n 1000 $LOGS_DIR/*.log &
       fi
       return
     else

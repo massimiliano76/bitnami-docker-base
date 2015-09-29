@@ -1,0 +1,3 @@
+#!/bin/bash
+. $BITNAMI_PREFIX/bitnami-utils.sh
+check_for_updates
