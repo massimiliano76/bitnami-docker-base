@@ -63,5 +63,5 @@ if [ "x$IS_BITNAMI_STACK" = "x" ] ; then
     $BITNAMI_PREFIX/config
 else
   $BITNAMI_PREFIX/ctlscript.sh stop
-  mv $BITNAMI_PREFIX/apps $BITNAMI_PREFIX/apps-original
+  mv $BITNAMI_PREFIX/apps $BITNAMI_PREFIX/apps.bak
 fi
