@@ -11,9 +11,9 @@ else
   url=https://downloads.bitnami.com/files/download/containers/$BITNAMI_APP_NAME/$BITNAMI_APP_FILENAME
   echo $url
   if [ $SHOW_PROGRESS ]; then
-    wget $url -O /tmp/installer.run
+    curl -SL --progress-bar $url -o /tmp/installer.run
   else
-    wget -q $url -O /tmp/installer.run
+    curl -SLs $url -o /tmp/installer.run
   fi
 fi
 
