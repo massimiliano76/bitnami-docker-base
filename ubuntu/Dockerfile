@@ -2,7 +2,8 @@ FROM ubuntu-debootstrap:14.04
 MAINTAINER Bitnami <containers@bitnami.com>
 
 ENV BITNAMI_PREFIX=/opt/bitnami \
-    S6_OVERLAY_VERSION=1.14.0.4
+    S6_OVERLAY_VERSION=1.14.0.4 \
+    S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 
 # Create bitnami user and added specific requirements
 RUN apt-get update && \
