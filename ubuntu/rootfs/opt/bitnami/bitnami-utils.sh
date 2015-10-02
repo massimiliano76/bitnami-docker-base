@@ -129,7 +129,7 @@ wait_and_tail_logs(){
       if [ $CURRENT_USER = $BITNAMI_APP_USER ]; then
         tail -f -n 1000 $LOGS_DIR/*.log &
       else
-        s6-setuidgid $BITNAMI_APP_USER tail -f -n 1000 $LOGS_DIR/*.log &
+        s6-envuidgid $BITNAMI_APP_USER tail -f -n 1000 $LOGS_DIR/*.log &
       fi
       return
     else
