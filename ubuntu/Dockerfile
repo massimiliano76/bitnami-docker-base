@@ -21,3 +21,4 @@ RUN apt-get update && \
   rm -rf /var/lib/apt /var/cache/apt/archives/* /tmp/*
 
 COPY rootfs/ /
+ENTRYPOINT ["/entrypoint.sh"]

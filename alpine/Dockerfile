@@ -24,3 +24,4 @@ RUN apk add --update libstdc++ bash ca-certificates sudo curl coreutils && \
     rm /var/cache/apk/*
 
 COPY rootfs/ /
+ENTRYPOINT ["/entrypoint.sh"]
