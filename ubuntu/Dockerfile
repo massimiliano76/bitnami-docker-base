@@ -1,7 +1,8 @@
 FROM ubuntu-debootstrap:14.04
 MAINTAINER Bitnami <containers@bitnami.com>
 
-ENV BITNAMI_PREFIX=/opt/bitnami \
+ENV BITNAMI_APP_NAME=base \
+    BITNAMI_PREFIX=/opt/bitnami \
     S6_OVERLAY_VERSION=1.15.0.0 \
     S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 
@@ -20,3 +21,4 @@ RUN apt-get update && \
   rm -rf /var/lib/apt /var/cache/apt/archives/* /tmp/*
 
 COPY rootfs/ /
+ENTRYPOINT ["/entrypoint.sh"]
