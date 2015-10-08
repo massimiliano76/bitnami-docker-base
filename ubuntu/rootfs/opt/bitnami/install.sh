@@ -7,11 +7,14 @@ if [ -f /tmp/installer.run ]; then
   echo "===> /tmp/installer.run already exists, skipping download."
 else
   BITNAMI_INSTALLER_VERSION=$(echo $BITNAMI_APP_VERSION | awk -F"-r" '{print $1}')
+  if [ ! -v BITNAMI_FILENAME_PREFIX ] ; then
+    BITNAMI_FILENAME_PREFIX="bitnami-"
+  fi
   if [ "x$IS_BITNAMI_STACK" = "x" ] ; then
-    BITNAMI_APP_FILENAME=bitnami-$BITNAMI_APP_NAME-$BITNAMI_INSTALLER_VERSION-container-linux-x64-installer.run
+    BITNAMI_APP_FILENAME=$BITNAMI_FILENAME_PREFIX$BITNAMI_APP_NAME-$BITNAMI_INSTALLER_VERSION-container-linux-x64-installer.run
     url=https://downloads.bitnami.com/files/download/containers/$BITNAMI_APP_NAME/$BITNAMI_APP_FILENAME
   else
-    BITNAMI_APP_FILENAME=bitnami-$BITNAMI_APP_NAME-$BITNAMI_INSTALLER_VERSION-linux-x64-installer.run
+    BITNAMI_APP_FILENAME=$BITNAMI_FILENAME_PREFIX$BITNAMI_APP_NAME-$BITNAMI_INSTALLER_VERSION-linux-x64-installer.run
     url=https://downloads.bitnami.com/files/stacks/$BITNAMI_APP_NAME/$BITNAMI_APP_VERSION/$BITNAMI_APP_FILENAME
   fi
   echo $url
