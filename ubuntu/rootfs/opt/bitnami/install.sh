@@ -54,6 +54,7 @@ if [ -f "$BITNAMI_PREFIX/bitnami-utils.sh" ]; then
 fi
 
 if [ -f "/tmp/post-install.sh" ]; then
+  echo "===> Executing post-install script"
   sh /tmp/post-install.sh
 fi
 
@@ -65,6 +66,7 @@ if [ "x$IS_BITNAMI_STACK" = "x" ] ; then
   rm -rf $BITNAMI_PREFIX/ctlscript.sh \
     $BITNAMI_PREFIX/config
 else
+  echo "===> Stopping all services"
   $BITNAMI_PREFIX/ctlscript.sh stop
   mv $BITNAMI_PREFIX/apps $BITNAMI_PREFIX/apps.bak
 fi
