@@ -66,7 +66,7 @@ if [ "x$IS_BITNAMI_STACK" = "x" ] ; then
   rm -rf $BITNAMI_PREFIX/ctlscript.sh \
     $BITNAMI_PREFIX/config
 else
-  echo "===> Stopping all services after installation"
+  echo "===> Stopping all services"
   $BITNAMI_PREFIX/ctlscript.sh stop
   mv $BITNAMI_PREFIX/apps $BITNAMI_PREFIX/apps.bak
 fi
