@@ -1,0 +1,90 @@
+#!/usr/bin/with-contenv bash
+set -e
+
+. $BITNAMI_PREFIX/scripts/init/functions
+
+for service in apache mysql php-fpm; do
+  if [ -f /etc/services.d/$service/down ] ; then
+    echo '[NOTE] Skipping application initialization. Please use `docker run` without a command for a complete boot sequence'
+    exit 0
+  fi
+done
+
+# when run with --force option, set the password regardless of flag
+if [ "x$1" != "x--force" ] ; then
+    run_once_globally_check "initialization"
+    if [ $? -ne 0 ]; then
+        exit 0
+    fi
+fi
+
+# load Bitnami environment in the default environment
+grep "^\s*PATH\s*=" $BITNAMI_PREFIX/scripts/setenv.sh >> ~/.bashrc
+echo "export PATH" >> ~/.bashrc
+
+# Hide "Syntax OK" message when starting apache
+sed -e 's/if $HTTPD -t/config_test=$($HTTPD -t 2>\&1)\n    if [ "$?" -eq "0" ]/' -i $BITNAMI_PREFIX/apache2/scripts/ctl.sh
+
+# restore apps directory, exposing to the volume in case it is being used
+mkdir -p $BITNAMI_PREFIX/apps
+
+if [ "$(find $BITNAMI_PREFIX/apps -type f | wc -l)" -ne "0" ]; then
+    cat <<EOF
+[ERROR] Please mount $BITNAMI_PREFIX/apps in an empty directory. Otherwise the application may not work properly.
+EOF
+    kill -SIGTERM 1
+    sleep 2
+    exit
+else
+    if [ "x$USER_UID" != "x" -a "$USER_UID" != "`id -u bitnami`" ] ; then
+      correct_permissions $USER_UID $BITNAMI_PREFIX
+    fi
+    cd $BITNAMI_PREFIX/apps.bak &&  find ./ -maxdepth 1 -mindepth 1 -exec mv {} $BITNAMI_PREFIX/apps \; && cd - > /dev/null && rm -rf $BITNAMI_PREFIX/apps.bak
+fi
+
+if [ -n "$REQUIRES_DOMAIN" -a -z "$BITNAMI_APPLICATION_DOMAIN" ] ; then
+    cat <<EOF
+[ERROR] The application requires to set the domain where it will be served. Please set BITNAMI_APPLICATION_DOMAIN environment variable before running the container.
+[ERROR]     example: docker run --name=$BITNAMI_APP_NAME -e "BITNAMI_APPLICATION_DOMAIN=yoursite.com" -d -p 80:80 -p 443:443 bitnami/bitnami-$BITNAMI_APP_NAME:$BITNAMI_APP_VERSION
+EOF
+
+    kill -SIGTERM 1
+    sleep 2
+    exit
+fi
+
+# redefine the workdir if set
+if [ "x$WORKDIR" != "x" ] ; then
+    unlink /workdir
+    ln -s $WORKDIR /workdir
+fi
+
+echo "
+  - Please wait while the application is initialized..."
+
+OPTIONS="--appurl / --regenerateKeys 1"
+if [ -f /etc/vsftpd.conf ] ; then
+    FTP_PASS="`generate_random_password`"
+    OPTIONS="$OPTIONS --ftp_user bitnamiftp --ftp_password $FTP_PASS"
+    echo "$FTP_PASS
+$FTP_PASS" | passwd bitnamiftp 2>/dev/null
+fi
+
+for i in `ls $BITNAMI_PREFIX/apps/*/bnconfig`; do
+    $i $OPTIONS
+    if [ "x$BITNAMI_APPLICATION_DOMAIN" != "x" ] ; then
+        echo "    Changing the application domain to $BITNAMI_APPLICATION_DOMAIN"
+        $i --machine_hostname $BITNAMI_APPLICATION_DOMAIN
+    fi
+done
+
+# Stop the services
+$BITNAMI_PREFIX/ctlscript.sh stop 2>&1 > /dev/null 
+
+# Disable services not included in the container
+disable_not_present_services
+
+# Make mysqld_safe not stay running after starting, so s6 is able to stop it gracefully
+sed -e 's/\(\s*cmd=.*$NOHUP_NICENESS\)/NOHUP_NICENESS=exec\n\1/' -i $BITNAMI_PREFIX/mysql/bin/mysqld_safe
+
+echo "     Done."

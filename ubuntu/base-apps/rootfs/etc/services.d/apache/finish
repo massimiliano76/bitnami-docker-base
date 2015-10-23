@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv bash
+
+APACHE_ROOTDIR="$BITNAMI_PREFIX/apache2"
+
+# Remove pidfile
+rm -f $APACHE_ROOTDIR/logs/httpd.pid

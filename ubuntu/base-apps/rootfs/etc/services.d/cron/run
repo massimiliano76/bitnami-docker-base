@@ -1,0 +1,10 @@
+#!/usr/bin/with-contenv bash
+set -e
+source $BITNAMI_PREFIX/bitnami-utils.sh
+
+CRON_DAEMON="/usr/sbin/cron"
+CRON_OPTS="-f -L 15"
+
+test -x "$CRON_DAEMON" || exit 5
+
+exec $CRON_DAEMON $CRON_OPTS

@@ -1,0 +1,28 @@
+#!/usr/bin/with-contenv bash
+set -e
+source $BITNAMI_PREFIX/bitnami-utils.sh
+
+SYSLOGNG_DAEMON="/usr/sbin/syslog-ng"
+SYSLOGNG_OPTS=""
+
+test -x "$SYSLOGNG_DAEMON" || exit 0
+
+#we source /etc/default/syslog-ng if exists
+[ -r /etc/default/syslog-ng ] && . /etc/default/syslog-ng
+
+create_xconsole() {
+    XCONSOLE=/dev/xconsole
+    if [ "$(uname -s)" = "GNU/kFreeBSD" ]; then
+        XCONSOLE=/var/run/xconsole
+        ln -sf $XCONSOLE /dev/xconsole
+    fi
+    if [ ! -e $XCONSOLE ]; then
+        mknod -m 640 $XCONSOLE p
+        chown root:adm $XCONSOLE
+        [ -x /sbin/restorecon ] && /sbin/restorecon $XCONSOLE
+    fi
+}
+
+create_xconsole
+
+exec $SYSLOGNG_DAEMON $SYSLOGNG_OPTS -F

@@ -1,0 +1,93 @@
+#!/bin/sh
+#
+# Bitnami Functions
+# Copyright 2015 Bitnami.com All Rights Reserved
+#
+
+SEM_DIR="$BITNAMI_PREFIX/var/sem"
+DATA_DIR="$BITNAMI_PREFIX/var/data"
+USER_DATA="$BITNAMI_PREFIX/var/user-data"
+
+###
+
+generate_random_password_chars() {
+  COUNT=$1
+  shift
+  PWDCHARS=$1
+  tr </dev/urandom -d -c "$PWDCHARS" | head -c$COUNT
+}
+
+generate_random_password() {
+  COUNT=$1
+  if [ "x$COUNT" = "x" ] ; then
+    COUNT=8
+  fi
+  RANDOM_VALUE=`tr -d -c 0-9 </dev/urandom | head -c3`
+  INTERNAL_CHARS=`expr $COUNT - 3`
+  COUNT0=`expr $RANDOM_VALUE % $INTERNAL_CHARS`
+  COUNT1=`expr $COUNT - $COUNT0 - 3`
+  LETTERS="A-Za-z"
+  DIGITS="0-9"
+  while true ; do
+    PART1=`generate_random_password_chars 1 $LETTERS`
+    PART2=`generate_random_password_chars $COUNT0 $LETTERS$DIGITS`
+    PART3=`generate_random_password_chars 1 $DIGITS`
+    PART4=`generate_random_password_chars $COUNT1 $LETTERS$DIGITS`
+    PART5=`generate_random_password_chars 1 $LETTERS`
+    if echo $PART1$PART2$PART3$PART4$PART5 | grep '[A-Z]' >/dev/null 2>/dev/null ; then
+      echo $PART1$PART2$PART3$PART4$PART5
+      break
+    fi
+  done
+}
+
+run_once_globally_check() {
+  mkdir -p $SEM_DIR
+  if [ -f $SEM_DIR/$1.global ]; then
+    return 1;
+  fi
+  echo "$2" > $SEM_DIR/$1.global
+  return 0
+}
+
+run_once_per_boot_check() {
+  mkdir -p $SEM_DIR
+  last_boot=`who -b`
+  if [ -f $SEM_DIR/$1.last_boot ] && [ "x$last_boot" = "x`cat $SEM_DIR/$1.last_boot`" ]; then
+    return 1;
+  fi
+  echo "$last_boot" > $SEM_DIR/$1.last_boot
+  return 0
+}
+
+correct_permissions() {
+  host_uid=$1
+  host_gid=$1
+  base_directory=$2
+  bitnami_uid=`id -u bitnami`
+  bitnami_gid=`id -g bitnami`
+  usermod -u $host_uid bitnami
+  groupmod -g $host_gid bitnami
+  if [ -n "$(getent passwd bitnamiftp)" ]; then
+    usermod -u $host_uid -g $host_gid -o bitnamiftp
+  fi
+  find $base_directory -user $bitnami_uid -exec chown $host_uid {} +
+  find $base_directory -group $bitnami_gid -exec chgrp $host_gid {} +
+}
+
+disable_not_present_services() {
+  base_directory=$1
+  if [ "x$base_directory" = "x" ] ; then
+    base_directory=$BITNAMI_PREFIX
+  fi
+  ctlscript=$base_directory/ctlscript.sh
+  if [ -f $ctlscript ] ; then
+    services=$($ctlscript help | grep "^\s*$ctlscript\s\+\S*\s\+\S*" | awk '{print $NF}')
+    for service in $services; do
+      if [ -f /etc/services.d/$service ] ; then
+        touch /etc/services.d/$service/down
+      fi
+    done
+  fi
+}
+

@@ -108,7 +108,11 @@ check_for_updates() {
     MSG="Your container is up to date!"
   elif [ "$STATUS" = "201" ]; then
     COLOR="\e[0;30;43m"
-    MSG="New version available: run docker pull bitnami/$BITNAMI_APP_NAME:$VERSION to update."
+    if [ "x$IS_BITNAMI_STACK" = "x" ] ; then
+      MSG="New version available: run docker pull bitnami/$BITNAMI_APP_NAME:$VERSION to update."
+    else
+      MSG="New version available $BITNAMI_APP_NAME:$VERSION : this all-in-one container is intended for development usage. It does not support automatic upgrades."
+    fi
   fi
 
   if [ "$MSG" ]; then

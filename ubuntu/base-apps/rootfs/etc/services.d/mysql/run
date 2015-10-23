@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+set -e
+source $BITNAMI_PREFIX/bitnami-utils.sh
+
+MYSQL_ROOTDIR="$BITNAMI_PREFIX/mysql"
+MYSQL_START="$MYSQL_ROOTDIR/bin/mysqld_safe --defaults-file=$MYSQL_ROOTDIR/my.cnf --port=3306 --socket=$MYSQL_ROOTDIR/tmp/mysql.sock --datadir=$MYSQL_ROOTDIR/data --log-error=$MYSQL_ROOTDIR/data/mysqld.log --pid-file=$MYSQL_ROOTDIR/data/mysqld.pid --lower-case-table-names=1"
+
+exec $MYSQL_START 2>&1 > /dev/null 

@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+set -e
+source $BITNAMI_PREFIX/bitnami-utils.sh
+
+PHP_ROOTDIR="$BITNAMI_PREFIX/php"
+PHP_START="$PHP_ROOTDIR/sbin/php-fpm --fpm-config $PHP_ROOTDIR/etc/php-fpm.conf --prefix $PHP_ROOTDIR -c $PHP_ROOTDIR/etc/php.ini -F"
+
+exec $PHP_START
