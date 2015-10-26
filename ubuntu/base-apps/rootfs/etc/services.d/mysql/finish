@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv bash
+
+MYSQL_ROOTDIR="$BITNAMI_PREFIX/mysql"
+
+# Remove pidfile
+rm -f $MYSQL_ROOTDIR/data/mysqld.pid

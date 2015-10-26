@@ -1,0 +1,18 @@
+  $BITNAMI_APP_NAME cheatsheet:
+  
+    ACCESSING THE APPLICATION:
+      Note: In order to expose the ports to be able to access the application, it's recommended to start the container with the command:
+                 docker run --name=$BITNAMI_APP_NAME -d -p 80:80 -p 443:443 bitnami/$BITNAMI_APP_NAME:$BITNAMI_APP_VERSION
+      Credentials: This container is intented for test purposes so the credentials have default values (login: $BITNAMI_APPLICATION_USER / password: $BITNAMI_APPLICATION_PASSWORD)
+  
+    PORTS:
+      80: Apache HTTP default port.
+      443: Apache HTTPS default port.
+  
+    COMMANDS:
+      print-help: Print this page.
+      check-updates: Check if a new version of the $BITNAMI_APP_NAME image is available.
+
+  Visit $GITHUB_PAGE for more information.
+
+

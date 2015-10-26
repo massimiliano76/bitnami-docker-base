@@ -1,0 +1,17 @@
+#!/usr/bin/with-contenv bash
+set -e
+source $BITNAMI_PREFIX/bitnami-utils.sh
+
+VSFTPD_DAEMON="/usr/sbin/vsftpd"
+VSFTPD_LOGFILE="/var/log/vsftpd.log"
+VSFTPD_OPTS=""
+
+test -x "$VSFTPD_DAEMON" || exit 5
+if [ ! -e "${VSFTPD_LOGFILE}" ]
+then
+    touch "${VSFTPD_LOGFILE}"
+    chmod 640 "${VSFTPD_LOGFILE}"
+    chown root:adm "${VSFTPD_LOGFILE}"
+fi
+
+exec $VSFTPD_DAEMON $VSFTPD_OPTS

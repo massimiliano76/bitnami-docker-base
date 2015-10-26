@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+set -e
+source $BITNAMI_PREFIX/bitnami-utils.sh
+
+APACHE_ROOTDIR="$BITNAMI_PREFIX/apache2"
+APACHE_START="$APACHE_ROOTDIR/bin/httpd -DFOREGROUND -f $APACHE_ROOTDIR/conf/httpd.conf"
+
+exec $APACHE_START
