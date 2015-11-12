@@ -3,7 +3,7 @@ MAINTAINER Bitnami <containers@bitnami.com>
 
 ENV BITNAMI_APP_NAME=base \
     BITNAMI_PREFIX=/opt/bitnami \
-    S6_OVERLAY_VERSION=1.15.0.0 \
+    S6_OVERLAY_VERSION=1.16.0.0 \
     S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 
 RUN apk add --update libstdc++ bash ca-certificates sudo curl coreutils && \
