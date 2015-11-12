@@ -14,8 +14,6 @@ RUN apk add --update libstdc++ bash ca-certificates sudo curl coreutils && \
     /usr/glibc/usr/bin/ldconfig /lib /usr/glibc/usr/lib && \
     curl -LO https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-amd64.tar.gz && \
     tar -zxf s6-overlay-amd64.tar.gz -C / && \
-    curl -o /usr/bin/gosu "https://github.com/tianon/gosu/releases/download/1.4/gosu-amd64" && \
-    chmod +x /usr/bin/gosu && \
     addgroup bitnami && \
     adduser -h /home/bitnami -s /bin/bash -D -G bitnami -g "" bitnami && \
     echo "bitnami ALL=NOPASSWD: ALL" >> /etc/sudoers && \
