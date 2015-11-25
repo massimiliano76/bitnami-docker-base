@@ -51,7 +51,7 @@ generate_conf_files() {
   # echo ""
   # echo "==> Copying default configuration to $BASE_PATH/conf..."
   # echo ""
-  cp -an $BASE_PATH/conf.defaults/* $BASE_PATH/conf
+  cp -an $BASE_PATH/conf.defaults/* $BASE_PATH/conf || true
 }
 
 GITHUB_PAGE=https://github.com/bitnami/bitnami-docker-${BITNAMI_APP_NAME}
