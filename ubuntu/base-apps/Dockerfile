@@ -14,3 +14,4 @@ RUN apt-get update && \
       apt-get clean && rm -rf /var/lib/apt /var/cache/apt/archives/* /tmp/*
 
 WORKDIR /workdir
+ENTRYPOINT /init
