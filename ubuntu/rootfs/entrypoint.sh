@@ -30,6 +30,8 @@ if [ -n "$BITNAMI_APP_DAEMON" ]; then
   fi
 
   exec /init "$@"
+elif [ -n "$IS_BITNAMI_STACK" ]; then
+  exec /init "$@"
 else
   source $BITNAMI_PREFIX/bitnami-utils.sh
 
