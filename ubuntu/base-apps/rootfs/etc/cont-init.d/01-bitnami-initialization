@@ -12,10 +12,12 @@ done
 
 # when run with --force option, set the password regardless of flag
 if [ "x$1" != "x--force" ] ; then
+    set +e
     run_once_globally_check "initialization"
     if [ $? -ne 0 ]; then
         exit 0
     fi
+    set -e
 fi
 
 # load Bitnami environment in the default environment
