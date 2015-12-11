@@ -92,7 +92,7 @@ disable_not_present_services() {
     
     services_to_disable=$services
     for service in $services_to_disable; do
-          touch /etc/services.d/$service/down
+          rm -rf /etc/services.d/$service/
     done
   fi
 }
