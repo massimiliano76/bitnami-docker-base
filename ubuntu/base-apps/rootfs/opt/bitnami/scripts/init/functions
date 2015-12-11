@@ -82,11 +82,17 @@ disable_not_present_services() {
   fi
   ctlscript=$base_directory/ctlscript.sh
   if [ -f $ctlscript ] ; then
-    services=$($ctlscript help | grep "^\s*$ctlscript\s\+\S*\s\+\S*" | awk '{print $NF}')
-    for service in $services; do
-      if [ -f /etc/services.d/$service ] ; then
-        touch /etc/services.d/$service/down
-      fi
+    services=$(ls -1 /etc/services.d)
+    common="cron syslog-ng vsftpd"
+    installed=$($ctlscript help | grep "^\s*$ctlscript\s\+\S*\s\+\S*" | awk '{print $NF}')
+    
+    for service in $common $installed; do
+        services=`echo "$services" | grep -v $service`
+    done
+    
+    services_to_disable=$services
+    for service in $services_to_disable; do
+          touch /etc/services.d/$service/down
     done
   fi
 }

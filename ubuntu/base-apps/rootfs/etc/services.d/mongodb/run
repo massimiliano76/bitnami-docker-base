@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+set -e
+source $BITNAMI_PREFIX/bitnami-utils.sh
+
+MONGODB_ROOTDIR="$BITNAMI_PREFIX/mongodb"
+MONGODB_START="$MONGODB_ROOTDIR/bin/mongod --config $MONGODB_ROOTDIR/mongodb.conf --pidfilepath $MONGODB_ROOTDIR/tmp/mongodb.pid"
+
+s6-setuidgid mongodb $MONGODB_START >> $MONGODB_ROOTDIR/log/mongodb.log

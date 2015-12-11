@@ -89,4 +89,9 @@ disable_not_present_services
 # Make mysqld_safe not stay running after starting, so s6 is able to stop it gracefully
 sed -e 's/\(\s*cmd=.*$NOHUP_NICENESS\)/NOHUP_NICENESS=exec\n\1/' -i $BITNAMI_PREFIX/mysql/bin/mysqld_safe
 
+# Make mongodb service able to run in foreground if installed
+if [ -f $BITNAMI_PREFIX/mongodb/mongodb.conf ] ; then
+    sed -e 's/fork = true/#fork = true/' -i $BITNAMI_PREFIX/mongodb/mongodb.conf
+fi
+
 echo "     Done."
