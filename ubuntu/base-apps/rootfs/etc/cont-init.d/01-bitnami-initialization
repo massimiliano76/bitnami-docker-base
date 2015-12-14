@@ -3,7 +3,7 @@ set -e
 
 . $BITNAMI_PREFIX/scripts/init/functions
 
-for service in apache mysql php-fpm; do
+for service in apache mysql php-fpm mongodb; do
   if [ -f /etc/services.d/$service/down ] ; then
     echo '[NOTE] Skipping application initialization. Please use `docker run` without a command for a complete boot sequence'
     exit 0
