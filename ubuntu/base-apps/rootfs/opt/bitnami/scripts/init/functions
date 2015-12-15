@@ -78,23 +78,23 @@ correct_permissions() {
 disable_not_present_services() {
   base_directory=$1
   if [ "x$base_directory" = "x" ] ; then
-      base_directory=$BITNAMI_PREFIX
+    base_directory=$BITNAMI_PREFIX
   fi
   ctlscript=$base_directory/ctlscript.sh
   if [ -f $ctlscript ] ; then
-      services=$(ls -1 /etc/services.d)
-      common="cron syslog-ng vsftpd"
-      installed=$($ctlscript help | grep "^\s*$ctlscript\s\+\S*\s\+\S*" | awk '{print $NF}')
-      for service in $common $installed; do
-          services=`echo "$services" | grep -v $service || true`
-      done
+    services=$(ls -1 /etc/services.d)
+    common="cron syslog-ng vsftpd"
+    installed=$($ctlscript help | grep "^\s*$ctlscript\s\+\S*\s\+\S*" | awk '{print $NF}')
+    for service in $common $installed; do
+      services=`echo "$services" | grep -v $service || true`
+    done
       
-      if [ "x$services" != "x" ] ; then
-          services_to_disable=$services
-          for service in $services_to_disable; do
-              rm -rf /etc/services.d/$service/
-          done
-      fi
+    if [ "x$services" != "x" ] ; then
+      services_to_disable=$services
+      for service in $services_to_disable; do
+        rm -rf /etc/services.d/$service/
+      done
+    fi
   fi
 }
 
