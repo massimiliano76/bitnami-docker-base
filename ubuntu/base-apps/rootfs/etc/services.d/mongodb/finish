@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv bash
+
+MONGODB_ROOTDIR="$BITNAMI_PREFIX/mongodb"
+
+# Remove pidfile
+rm -f $MONGODB_ROOTDIR/tmp/mongodb.pid

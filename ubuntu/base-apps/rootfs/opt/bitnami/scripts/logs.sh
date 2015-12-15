@@ -60,6 +60,10 @@ php | php-fpm)
     logfile=$PREFIX/php/var/log/php-fpm.log
     index="$bluef[$1]$reset "
     ;;
+mongodb)
+    logfile=$PREFIX/mongodb/log/mongodb.log
+    index="$greenf[$1]$reset "
+    ;;
 *) exit
 esac
 
