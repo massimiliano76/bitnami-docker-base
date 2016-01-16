@@ -46,7 +46,8 @@ if [ -f "$BITNAMI_PREFIX/bitnami-utils.sh" ]; then
 fi
 
 if [ -f "/tmp/post-install.sh" ]; then
-  sh /tmp/post-install.sh
+  echo "===> Executing post-install script"
+  . /tmp/post-install.sh
 fi
 
 rm -rf $BITNAMI_PREFIX/ctlscript.sh \

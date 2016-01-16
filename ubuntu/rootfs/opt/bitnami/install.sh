@@ -55,7 +55,7 @@ fi
 
 if [ -f "/tmp/post-install.sh" ]; then
   echo "===> Executing post-install script"
-  sh /tmp/post-install.sh
+  . /tmp/post-install.sh
 fi
 
 rm -rf $BITNAMI_PREFIX/manager-linux-x64.run \
