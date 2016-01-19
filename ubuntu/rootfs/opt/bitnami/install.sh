@@ -7,7 +7,7 @@ if [ -f /tmp/installer.run ]; then
   echo "===> /tmp/installer.run already exists, skipping download."
 else
   BITNAMI_INSTALLER_VERSION=$(echo $BITNAMI_APP_VERSION | awk -F"-r" '{print $1}')
-  if [ ! -v BITNAMI_FILENAME_PREFIX ] ; then
+  if [ "x$BITNAMI_FILENAME_PREFIX" = "x" ] ; then
     BITNAMI_FILENAME_PREFIX="bitnami-"
   fi
   if [ "x$IS_BITNAMI_STACK" = "x" ] ; then
