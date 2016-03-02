@@ -1,4 +1,4 @@
-FROM ubuntu:trusty-20160217
+FROM ubuntu:trusty-20160226
 MAINTAINER Bitnami <containers@bitnami.com>
 
 ENV BITNAMI_APP_NAME=base \
@@ -8,7 +8,7 @@ ENV BITNAMI_APP_NAME=base \
 
 # Create bitnami user and added specific requirements
 RUN apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y curl ca-certificates sudo && \
+  DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y curl ca-certificates sudo libssl1.0.0 && \
   curl -LO https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-amd64.tar.gz && \
   tar -zxf s6-overlay-amd64.tar.gz -C / && \
   adduser bitnami --disabled-password --gecos "" && \
