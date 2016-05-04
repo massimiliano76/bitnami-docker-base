@@ -1,4 +1,4 @@
-FROM ubuntu:trusty-20160405
+FROM ubuntu:trusty-20160503.1
 MAINTAINER Bitnami <containers@bitnami.com>
 
 ENV BITNAMI_APP_NAME=base \
