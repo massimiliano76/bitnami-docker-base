@@ -1,4 +1,10 @@
-# Bitnami Base OS Docker Image
+# WARNING:
+
+This image has been deprecated and is no longer maintained.
+
+Superseded by: https://github.com/bitnami/stacksmith-base.
+
+# Bitnami Base OS Docker Image [DEPRECATED]
 All Bitnami container images are built using this image as a base. As of this time, this image uses Ubuntu 14.04 as the underlying OS.
 
 # License
